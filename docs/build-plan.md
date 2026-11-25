@@ -65,3 +65,10 @@ load is listed and left out of the totals, with a count beside the headline figu
    coverage and fallback states (including `list-other`).
 4. Apply the Frakture look (`assets/frakture-look.json` in the skill).
 5. Check totals against each account's own report; run the page check; restrict access.
+
+## Live build status (2026-11-25)
+
+- Live artifact "Agency Portfolio" (Data type) reads `data/snapshot.json` as a file dataset; page calcs compute projections, status and totals.
+- Snapshot covers 5 of 28 typed accounts (ECU, Acton, Andrews, Ansari, Back the Bold); the other 23 show as `pending` in Reporting coverage and are in no total.
+- Page source (index.html and app.js) lives in the artifact's database; export it into `page/` when the report is final.
+- To add accounts: run `queries/portfolio.py` SQL per account, save to `data/raw/<id>.json`, rerun `queries/build_snapshot.py`, upload `data/snapshot.json` and update the dataset URL.

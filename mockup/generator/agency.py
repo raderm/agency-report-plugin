@@ -123,6 +123,7 @@ w, nx, due = reasons['Client K']
 attrows.append([f'<b>{k["nm"]}</b>', f'<b style="color:{MUT}">{SHAPE[k["status"]]} {k["status"]}</b>', w, nx, k['ad'], due])
 
 cov = [['Cost tracked for texts and ads', '12 of 12', '—', 'Return per $1 covers texts and ads only, at every account'],
+       ['Account type set in Engine 9', '12 of 12', '—', 'Accounts with no type are left out of the portfolio and named here'],
        ['Cost tracked for rented lists', '3 of 5 that rent', 'Clients A, J', 'Rented-list payback missing at 2 accounts'],
        ['Email list table connected', '11 of 12', 'Client L', 'List growth blank for 1 account'],
        ['A full prior year on record', '11 of 12', 'Client K', 'Left out of year-on-year totals'],

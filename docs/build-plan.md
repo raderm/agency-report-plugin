@@ -30,10 +30,13 @@ figures, charts, channel mix), the filter UI needs a redesign first, so that is 
   `liftoff` itself is `agency`; exclude it. Show a readable label ("State party"), keep the Engine 9 value
   as the key, and build the filter buttons from the values present, with counts, so a new type appears by
   itself.
-- **Accounts with no type:** `liftoff_angie_craig` and `liftoff_harry_dunn` return no name, type or parent,
-  so they look unconfigured or orphaned. Do not guess; ask the account owner whether they belong in the
-  portfolio. If kept, show "Uncategorized", count them in Reporting coverage ("Account type set in
-  Engine 9"), and never drop them from a filter or total.
+- **Accounts with no type (default: excluded):** an account with no Engine 9 `type` is left out of the
+  portfolio: not in the totals, the filters, the charts or the Portfolio row. The exclusion is never silent:
+  Reporting coverage ("Account type set in Engine 9") names each excluded account, and the headline figures
+  carry a count ("12 accounts; 2 left out, no account type"). Today `liftoff_angie_craig` and
+  `liftoff_harry_dunn` return no name, type or parent, so they look unconfigured or orphaned; confirm with the
+  account owner whether they belong. Make this an agency setting ("Include accounts with no type", off by
+  default); when on they appear under "Uncategorized".
 - **Selected accounts row:** when any filter is on, the table adds a row totaling what is shown (raised,
   share of portfolio, new donors, run rate). Growth uses comparable accounts only and says so. The Portfolio
   row always totals every account.
@@ -51,11 +54,11 @@ accounts with no full prior year; those show "New this cycle". Show both figures
 Thresholds should be agency settings that partners can change, and shown in the definitions.
 
 ## Missing data
-A gap never shows as zero. The coverage table names the accounts behind each gap. An account that fails to
+A gap never shows as zero. Excluded accounts (no account type) are named too. The coverage table names the accounts behind each gap. An account that fails to
 load is listed and left out of the totals, with a count beside the headline figures.
 
 ## Steps
-1. Connect Engine 9, list the Liftoff sub-accounts with their Engine 9 `type` (see Client category) and confirm the list, including the two accounts with no type, with the account owner.
+1. Connect Engine 9, list the Liftoff sub-accounts with their Engine 9 `type` (see Client category) and confirm the list, including the two accounts with no type (excluded by default), with the account owner.
 2. Per account, run the Fundraising Report probes (`cols.sql`, `codes.sql`, `coverage.sql` in the
    fundraising-report skill) and the datasets for the four periods.
 3. Build per-account rows (including category) and portfolio calcs as an Artifact Data dashboard, reusing the Fundraising Report's

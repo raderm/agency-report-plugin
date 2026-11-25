@@ -20,7 +20,7 @@ Design canvas: https://claude.ai/artifact/BhrzHnqk1MpYUoHcLFh5yx
 ## The page
 
 Header with period picker, headline KPIs (raised, vs last year, projected year-end, new donors, monthly run
-rate, raised per $1), account status chart, accounts table you can sort and filter by status and by client category (from Engine 9), with a fixed portfolio
+rate, raised per $1), account status chart, accounts table you can sort and filter by status and by client category (Engine 9 account type), with a fixed portfolio
 row and a row totaling the filtered accounts, "Needs attention" list, coverage and missing-data table, definitions. Accessibility is part of the
 design: status is shape plus word plus color, filters (status and category) are `aria-pressed` toggles with a visible and announced
 count, sortable headings are buttons with `aria-sort`, charts have keyboard stepping and a table alternative.

@@ -17,23 +17,26 @@ dates and channel rules.
 | Raised per $1 (texts and ads only) | Scorecard |
 | Traced to a channel, data-quality issues | Data Quality |
 
-## Client category
-Each client has a category (candidate, PAC, party committee, nonprofit, and so on) used to filter the
-accounts table, alongside the status filter. The two filters combine, and Clear filters resets both.
+## Client category (Engine 9 Account Type)
+Each client has a category used to filter the accounts table, alongside the status filter. The two combine,
+and Clear filters resets both. **Scope: the table only.** If the filter ever scopes the whole page (headline
+figures, charts, channel mix), the filter UI needs a redesign first, so that is not planned.
 
-- **Source:** read the category from each client account in Engine 9, never typed into this report, so a new
-  client appears under the right category by itself. The category list is whatever Engine 9 holds; the four
-  in the mockup are placeholders.
-- **Open item before building:** find where Engine 9 stores it (an account attribute or setting, or a
-  field on the account record) with `account` and `inventory`. If nothing holds it, ask the account owner
-  where it should live. Do not guess from the client's name or sector.
-- **Missing category:** show "Uncategorized", count it in Reporting coverage ("Category set in Engine 9",
-  with the accounts that lack it), and never drop the account from any filter or total.
+- **Source (confirmed):** the account's `type` in the Engine 9 account catalog. The MCP `account` tool's
+  `search` command returns it for every account, along with `name` and `parent_ids`; `account` search with
+  `prefix: "liftoff"` or `parents: ["liftoff"]` lists them. The report must read it from there, never from a
+  name or sector.
+- **Values today (Liftoff, 28 sub-accounts):** `candidate` 15, `pac` 6, `nonprofit` 6, `state_party` 1.
+  `liftoff` itself is `agency`; exclude it. Show a readable label ("State party"), keep the Engine 9 value
+  as the key, and build the filter buttons from the values present, with counts, so a new type appears by
+  itself.
+- **Accounts with no type:** `liftoff_angie_craig` and `liftoff_harry_dunn` return no name, type or parent,
+  so they look unconfigured or orphaned. Do not guess; ask the account owner whether they belong in the
+  portfolio. If kept, show "Uncategorized", count them in Reporting coverage ("Account type set in
+  Engine 9"), and never drop them from a filter or total.
 - **Selected accounts row:** when any filter is on, the table adds a row totaling what is shown (raised,
-  share of portfolio, new donors, run rate). Growth uses comparable accounts only and says so. The
-  Portfolio row always totals every account.
-- **Phase 2:** let the category filter scope the whole page (headline figures, charts, channel mix), with the
-  scope named in the lede. The draft scopes the table only.
+  share of portfolio, new donors, run rate). Growth uses comparable accounts only and says so. The Portfolio
+  row always totals every account.
 
 ## Like for like
 The headline total includes every account. Growth, projection against last year and new-donor change leave out
@@ -52,7 +55,7 @@ A gap never shows as zero. The coverage table names the accounts behind each gap
 load is listed and left out of the totals, with a count beside the headline figures.
 
 ## Steps
-1. Connect Engine 9, list the Liftoff sub-accounts and find where each account's category is stored; confirm both with the account owner.
+1. Connect Engine 9, list the Liftoff sub-accounts with their Engine 9 `type` (see Client category) and confirm the list, including the two accounts with no type, with the account owner.
 2. Per account, run the Fundraising Report probes (`cols.sql`, `codes.sql`, `coverage.sql` in the
    fundraising-report skill) and the datasets for the four periods.
 3. Build per-account rows (including category) and portfolio calcs as an Artifact Data dashboard, reusing the Fundraising Report's

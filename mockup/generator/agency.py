@@ -19,11 +19,11 @@ C = [
     ('Client K', 'Gubernatorial campaign', 'J. Lewis', 1420000, None, 1.35, 1.48, None, 14260, None, 12400, 880000, 512000, .861, 1),
     ('Client L', 'Local news nonprofit', 'M. Ortiz', 880000, 790000, 1.231, 1.257, 1.244, 3310, 2980, 33600, 90000, 24000, .957, 0),
 ]
-# Category comes from Engine 9 (see docs/build-plan.md). Placeholder values here.
-CAT = {'Client A': 'Party committee', 'Client B': 'Nonprofit', 'Client C': 'Candidate', 'Client D': 'Nonprofit', 'Client E': 'Nonprofit',
-       'Client F': 'PAC', 'Client G': 'Nonprofit', 'Client H': 'Party committee', 'Client I': 'Nonprofit', 'Client J': 'Nonprofit',
+# Category is the Engine 9 account type (candidate, pac, nonprofit, state_party). Placeholder assignments here.
+CAT = {'Client A': 'Nonprofit', 'Client B': 'Nonprofit', 'Client C': 'Candidate', 'Client D': 'Nonprofit', 'Client E': 'Nonprofit',
+       'Client F': 'PAC', 'Client G': 'Nonprofit', 'Client H': 'State party', 'Client I': 'Nonprofit', 'Client J': 'Nonprofit',
        'Client K': 'Candidate', 'Client L': 'Nonprofit'}
-CATS = ['Candidate', 'PAC', 'Party committee', 'Nonprofit']
+CATS = ['Candidate', 'PAC', 'State party', 'Nonprofit']
 rows = []
 for nm, sec, ad, ytd, ly, plo, phi, lyf, nd, ndly, rr, crev, cost, tr, hi in C:
     lo, hi_ = ytd * plo, ytd * phi

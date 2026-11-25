@@ -19,6 +19,11 @@ C = [
     ('Client K', 'Gubernatorial campaign', 'J. Lewis', 1420000, None, 1.35, 1.48, None, 14260, None, 12400, 880000, 512000, .861, 1),
     ('Client L', 'Local news nonprofit', 'M. Ortiz', 880000, 790000, 1.231, 1.257, 1.244, 3310, 2980, 33600, 90000, 24000, .957, 0),
 ]
+# Category comes from Engine 9 (see docs/build-plan.md). Placeholder values here.
+CAT = {'Client A': 'Party committee', 'Client B': 'Nonprofit', 'Client C': 'Candidate', 'Client D': 'Nonprofit', 'Client E': 'Nonprofit',
+       'Client F': 'PAC', 'Client G': 'Nonprofit', 'Client H': 'Party committee', 'Client I': 'Nonprofit', 'Client J': 'Nonprofit',
+       'Client K': 'Candidate', 'Client L': 'Nonprofit'}
+CATS = ['Candidate', 'PAC', 'Party committee', 'Nonprofit']
 rows = []
 for nm, sec, ad, ytd, ly, plo, phi, lyf, nd, ndly, rr, crev, cost, tr, hi in C:
     lo, hi_ = ytd * plo, ytd * phi
@@ -29,7 +34,7 @@ for nm, sec, ad, ytd, ly, plo, phi, lyf, nd, ndly, rr, crev, cost, tr, hi in C:
     elif pvs < -.15: status = 'At risk'
     elif pvs < -.05 or hi >= 1: status = 'Watch'
     else: status = 'On track'
-    rows.append(dict(nm=nm, sec=sec, ad=ad, ytd=ytd, ly=ly, lo=lo, hi=hi_, lyfull=lyfull, vs=vs, pvs=pvs, nd=nd, ndly=ndly, rr=rr,
+    rows.append(dict(nm=nm, cat=CAT[nm], sec=sec, ad=ad, ytd=ytd, ly=ly, lo=lo, hi=hi_, lyfull=lyfull, vs=vs, pvs=pvs, nd=nd, ndly=ndly, rr=rr,
                      rpd=crev / cost, tr=tr, dq=hi, status=status))
 TOT = sum(r['ytd'] for r in rows); TLY = sum(r['ly'] for r in rows if r['ly'])
 COMP = [r for r in rows if r['ly']]
@@ -49,9 +54,9 @@ SHAPE = {'On track': '●', 'Watch': '■', 'At risk': '▲', 'New this cycle': 
 def pc(v): return '—' if v is None else ('+' if v >= 0 else '−') + f'{abs(v) * 100:.0f}%'
 jsrows = []
 for r in rows:
-    jsrows.append({'st': r['status'], 'k_ytd': r['ytd'], 'k_vs': r['vs'], 'k_pvs': r['pvs'],
+    jsrows.append({'st': r['status'], 'cat': r['cat'], 'k_ly': r['ly'], 'k_rr': r['rr'], 'k_ytd': r['ytd'], 'k_vs': r['vs'], 'k_pvs': r['pvs'],
                    'k_nd': r['nd'], 'k_rpd': r['rpd'], 'k_tr': r['tr'],
-                   'c0': r['nm'], 'c1': r['sec'], 'c2': r['ad'], 'c3': mk(r['ytd']), 'c4': pc(r['vs']) if r['vs'] is not None else 'No prior year', 'c5': pct(r['ytd'] / TOT),
+                   'c0': r['nm'], 'c1': r['cat'] + ' · ' + r['sec'], 'c2': r['ad'], 'c3': mk(r['ytd']), 'c4': pc(r['vs']) if r['vs'] is not None else 'No prior year', 'c5': pct(r['ytd'] / TOT),
                    'c6': f"{mk(r['lo'])}–{mk(r['hi'])}", 'c7': pc(r['pvs']) if r['pvs'] is not None else '—', 'c8': n(r['nd']), 'c9': mk(r['rr']), 'c10': m2(r['rpd']),
                    'c11': pct(r['tr'], 0), 'c12': SHAPE[r['status']] + ' ' + r['status'],
                    'vc': ('#2E7D4A' if (r['vs'] or 0) >= 0 else '#B3261E') if r['vs'] is not None else MUT,
@@ -128,7 +133,7 @@ PP = '{{perPhrase}}'
 FILTERS = [('all', 'All', len(rows)), ('risk', 'At risk', cnt['At risk']), ('watch', 'Watch', cnt['Watch']), ('ok', 'On track', cnt['On track']), ('new', 'New this cycle', cnt['New this cycle'])]
 FMAP = {'risk': 'At risk', 'watch': 'Watch', 'ok': 'On track', 'new': 'New this cycle'}
 
-head = [('Client', None), ('Sector', None), ('Account director', None), ('Raised', 'ytd'), ('vs last year', 'vs'), ('Share of portfolio', None),
+head = [('Client', None), ('Category · sector', None), ('Account director', None), ('Raised', 'ytd'), ('vs last year', 'vs'), ('Share of portfolio', None),
         ('Projected year-end', None), ('Projected vs last year', 'pvs'), ('New donors', 'nd'), ('Monthly run rate', None), ('Raised per $1 tracked cost', 'rpd'),
         ('Traced to a channel', 'tr'), ('Status', None)]
 hh = ''
@@ -146,15 +151,21 @@ for i in range(13):
     elif i == 7: tds += '<td style="color:{{r.pc}};font-weight:700">{{r.c7}}</td>'
     elif i == 12: tds += '<td style="text-align:left;color:{{r.sc}};font-weight:700">{{r.c12}}</td>'
     else: tds += f'<td>{{{{r.c{i}}}}}</td>'
-filt = ('<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px;font-size:13px;color:#3F4945"><span id="flt-lab">Show</span>'
+filt = ('<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px;font-size:13px;color:#3F4945"><span id="flt-lab">Status</span>'
         '<div role="group" aria-labelledby="flt-lab" style="display:inline-flex;flex-wrap:wrap;border:1px solid #212529">'
         '<sc-for list="{{filters}}" as="f" hint-placeholder-count="5"><button type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" '
         'style="font-family:Outfit,sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border:0;border-left:{{f.bl}};padding:0 14px;min-height:44px;cursor:pointer;background:{{f.bg}};color:{{f.fg}}">{{f.label}}</button></sc-for></div>'
-        '<span>{{shownTxt}}</span></div>')
+        '</div>'
+        '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:#3F4945"><span id="cat-lab">Category</span>'
+        '<div role="group" aria-labelledby="cat-lab" style="display:inline-flex;flex-wrap:wrap;border:1px solid #212529">'
+        '<sc-for list="{{catFilters}}" as="f" hint-placeholder-count="5"><button type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" '
+        'style="font-family:Outfit,sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border:0;border-left:{{f.bl}};padding:0 14px;min-height:44px;cursor:pointer;background:{{f.bg}};color:{{f.fg}}">{{f.label}}</button></sc-for></div>'
+        '<span>{{shownTxt}}</span><button type="button" onClick="{{clearAll}}" style="font-family:Outfit,sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;min-height:44px;padding:0 14px;border:1px solid #212529;background:#fff;color:#212529;cursor:pointer">Clear filters</button></div>')
 acct_table = (filt + '<p aria-live="polite" class="sr">{{tblMsg}}</p>'
-              '<div role="region" aria-label="Accounts in the portfolio (scrolls sideways)" tabindex="0" class="scr"><table class="t" style="min-width:1380px">'
-              '<caption class="sr">Accounts in the portfolio. Column headings with arrows sort the table; the Show buttons filter it by status.</caption>'
+              '<div role="region" aria-label="Accounts in the portfolio (scrolls sideways)" tabindex="0" class="scr"><table class="t" style="min-width:1500px">'
+              '<caption class="sr">Accounts in the portfolio. Column headings with arrows sort the table; the Status and Category buttons filter it, and a Selected accounts row totals whatever is shown.</caption>'
               f'<thead><tr>{hh}</tr></thead><tbody><sc-for list="{{{{acctRows}}}}" as="r" hint-placeholder-count="12"><tr>{tds}</tr></sc-for>'
+              '<tr class="tot" style="display:{{subDisp}}"><td>Selected accounts</td><td class="l">{{subLabel}}</td><td class="l">—</td><td>{{sub_ytd}}</td><td>{{sub_vs}}</td><td>{{sub_share}}</td><td>—</td><td>—</td><td>{{sub_nd}}</td><td>{{sub_rr}}</td><td>—</td><td>—</td><td style="text-align:left">{{sub_stat}}</td></tr>'
               f'<tr class="tot"><td>Portfolio</td><td class="l">12 accounts</td><td class="l">4 directors</td><td>{mk(TOT)}</td><td>{pc((TOT - TLY) / TLY)}</td><td>100%</td>'
               f'<td>{mk(PLO)}–{mk(PHI)}</td><td>{pc(((PLO_C + PHI_C) / 2 - LYFULL) / LYFULL)}</td><td>{n(NEW)}</td><td>{mk(RR)}</td><td>{m2(CREV / CCOST)}</td><td>{pct(TRACED, 0)}</td><td style="text-align:left">{cnt["At risk"]} at risk · {cnt["Watch"]} watch</td></tr>'
               '</tbody></table></div>')
@@ -165,10 +176,27 @@ js = f'''
     const COLS = {json.dumps(COLS)};
     const FILTERS = {json.dumps(FILTERS)};
     const FMAP = {json.dumps(FMAP)};
-    const flt = s.flt || 'all', sk = s.sk || 'ytd', dir = s.sd || 'descending';
-    let rows = ROWS.filter((r) => flt === 'all' || r.st === FMAP[flt]);
+    const CATS = {json.dumps(CATS)};
+    const flt = s.flt || 'all', cat = s.cat || 'all', sk = s.sk || 'ytd', dir = s.sd || 'descending';
+    let rows = ROWS.filter((r) => (flt === 'all' || r.st === FMAP[flt]) && (cat === 'all' || r.cat === cat));
     rows = rows.slice().sort((a, b) => {{ const x = a['k_' + sk], y = b['k_' + sk]; if (x == null) return 1; if (y == null) return -1; return dir === 'descending' ? y - x : x - y; }});
-    const out = {{ acctRows: rows, tblMsg: s.tblMsg || '', shownTxt: 'Showing ' + rows.length + ' of ' + ROWS.length + ' accounts' }};
+    const out = {{ acctRows: rows, tblMsg: s.tblMsg || '', shownTxt: 'Showing ' + rows.length + ' of ' + ROWS.length + ' accounts' + (rows.length ? '' : '. No accounts match these filters; use Clear filters.') }};
+    const mk = (v) => v >= 1e6 ? '$' + (v / 1e6).toFixed(2) + 'M' : v >= 1e3 ? '$' + Math.round(v / 1e3).toLocaleString('en-US') + 'K' : '$' + Math.round(v);
+    const pc = (v) => (v >= 0 ? '+' : '−') + Math.abs(v * 100).toFixed(0) + '%';
+    const filtered = flt !== 'all' || cat !== 'all';
+    const sum = (a, f) => a.reduce((t, r) => t + (f(r) || 0), 0);
+    const comp = rows.filter((r) => r.k_ly);
+    const allYtd = sum(ROWS, (r) => r.k_ytd);
+    out.subDisp = filtered && rows.length ? 'table-row' : 'none';
+    out.subLabel = (cat === 'all' ? 'All categories' : cat) + (flt === 'all' ? '' : ', ' + FMAP[flt].toLowerCase());
+    Object.assign(out, Object.fromEntries(Object.entries({{ ytd: mk(sum(rows, (r) => r.k_ytd)), vs: comp.length ? pc((sum(comp, (r) => r.k_ytd) - sum(comp, (r) => r.k_ly)) / sum(comp, (r) => r.k_ly)) + (comp.length < rows.length ? ' (comparable only)' : '') : 'No prior year',
+                share: (sum(rows, (r) => r.k_ytd) / allYtd * 100).toFixed(1) + '%', nd: sum(rows, (r) => r.k_nd).toLocaleString('en-US'), rr: mk(sum(rows, (r) => r.k_rr)), stat: rows.length + ' accounts' }}).map(([k, v]) => ['sub_' + k, v])));
+    out.catFilters = [['all', 'All', ROWS.length]].concat(CATS.map((c) => [c, c, ROWS.filter((r) => r.cat === c).length])).map((f, i) => ({{
+      label: f[1] + ' (' + f[2] + ')', pressed: f[0] === cat ? 'true' : 'false',
+      bg: f[0] === cat ? '{INK}' : '#ffffff', fg: f[0] === cat ? '#ffffff' : '{INK}', bl: i ? '1px solid {INK}' : '0',
+      pick: () => this.setState({{ cat: f[0], tblMsg: 'Category: ' + f[1] + '. ' + f[2] + ' accounts in this category.' }})
+    }}));
+    out.clearAll = () => this.setState({{ flt: 'all', cat: 'all', tblMsg: 'Filters cleared. Showing all ' + ROWS.length + ' accounts.' }});
     out.filters = FILTERS.map((f, i) => ({{
       label: f[1] + ' (' + f[2] + ')', pressed: f[0] === flt ? 'true' : 'false',
       bg: f[0] === flt ? '{INK}' : '#ffffff', fg: f[0] === flt ? '#ffffff' : '{INK}', bl: i ? '1px solid {INK}' : '0',

@@ -1,6 +1,6 @@
 # Agency Portfolio report
 
-A one-page dashboard for partners, owners and account leadership at Frakture. It shows how each client
+A one-page dashboard for partners, owners and account leadership. It shows how each client
 account performs as part of the agency portfolio. Every figure is derived from the same metric in that
 client's [Fundraising Report](https://github.com/raderm/fundraising-report-plugin), so the two always agree.
 

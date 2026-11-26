@@ -24,3 +24,9 @@ rate, raised per $1), account status chart, accounts table you can sort and filt
 row and a row totaling the filtered accounts, "Needs attention" list, coverage and missing-data table, definitions. Accessibility is part of the
 design: status is shape plus word plus color, filters (status and category) are `aria-pressed` toggles with a visible and announced
 count, sortable headings are buttons with `aria-sort`, charts have keyboard stepping and a table alternative.
+
+## Layout
+
+- `page/`: source of the live page (index.html, app.js) and its settings, and `deploy/`: how to publish it. Start with `deploy/DEPLOY.md`.
+- `queries/`: per-account SQL and the snapshot builder. `data/`: raw results and `snapshot.json`.
+- `mockup/`: the design mockup and its generator.

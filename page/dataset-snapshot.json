@@ -1,0 +1,14 @@
+{
+  "title": "Client account snapshot",
+  "description": "One row per Liftoff client account: this year, last year and four years ago to date, from each account's own report query.",
+  "source": {
+    "kind": "file",
+    "url": "{{BLOB_URL}}",
+    "name": "snapshot.json",
+    "format": "json"
+  },
+  "updated": {
+    "at": "{{UPDATED_AT}}",
+    "by": "Claude"
+  }
+}

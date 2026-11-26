@@ -1,0 +1,150 @@
+<meta name="dash-one-writer">
+<meta name="dash-form" content="dashboard">
+<style>
+.ap { max-width: 1240px; margin: 0 auto; font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+.ap::before { content: ""; display: block; height: 6px; margin-bottom: 14px; background: linear-gradient(90deg, #01CCFF 0 25%, #F89800 25% 50%, #6AC481 50% 75%, #BB49EA 75% 100%); }
+.ap h1, .ap h2 { font-family: var(--font-anthropic-serif, inherit); font-weight: 400; margin: 0; }
+.ap h1 { font-size: var(--cds-font-size-title); line-height: 1.15; margin-top: 6px; }
+.ap h2 { font-size: var(--cds-font-size-heading); }
+.ap-lab { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-fg-muted); font-weight: 700; }
+.ap-lede { font-size: 16px; line-height: 1.55; max-width: 82ch; margin: 10px 0 0; }
+.ap-note { font-size: 13px; color: var(--color-fg-muted); max-width: 82ch; margin: 8px 0 0; }
+.ap-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--cds-gap-md); margin: var(--cds-gap-lg) 0; }
+.ap-tile, .ap-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-md); }
+.ap-tile { border-top: 3px solid #01CCFF; }
+.ap-tile .k { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--color-fg-muted); font-weight: 700; }
+.ap-tile .v { font-family: var(--font-anthropic-serif, inherit); font-size: 28px; font-variant-numeric: tabular-nums; margin-top: 4px; }
+.ap-tile .s { font-size: 12px; color: var(--color-fg-muted); margin-top: 4px; }
+.ap-card { margin-top: var(--cds-gap-lg); }
+.ap-card > p.sub { font-size: 13px; color: var(--color-fg-muted); margin: 4px 0 10px; max-width: 90ch; }
+.ap-scroll { overflow-x: auto; }
+.ap-scroll:focus-visible, .ap button:focus-visible, .ap summary:focus-visible, .ap [tabindex]:focus-visible { outline: 3px solid var(--color-fg); outline-offset: 2px; }
+.ap table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+.ap th, .ap td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+.ap th { font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--color-fg-muted); border-bottom: 2px solid var(--color-fg); }
+.ap th.l, .ap td.l { text-align: left; }
+.ap tr.tot td { font-weight: 700; border-top: 2px solid var(--color-fg); }
+.ap tr.sel td { font-weight: 700; background: var(--color-bg); }
+.ap-sb { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; background: none; border: 0; padding: 6px 0; min-height: 32px; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+th[aria-sort] .ap-sb::after { content: " \2195"; text-decoration: none; display: inline-block; }
+th[aria-sort="descending"] .ap-sb::after { content: " \25BC"; }
+th[aria-sort="ascending"] .ap-sb::after { content: " \25B2"; }
+.ap-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; font-size: 13px; color: var(--color-fg-muted); }
+.ap-seg { display: inline-flex; flex-wrap: wrap; border: 1px solid var(--color-fg); }
+.ap-seg button, .ap-clear { font-family: var(--font-anthropic-serif, inherit); font-weight: 700; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; min-height: 44px; padding: 0 14px; border: 0; background: var(--color-panel); color: var(--color-fg); cursor: pointer; }
+.ap-seg button + button { border-left: 1px solid var(--color-fg); }
+.ap-seg button[aria-pressed="true"] { background: var(--color-fg); color: var(--color-bg); }
+.ap-clear { border: 1px solid var(--color-fg); }
+.ap-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.ap-good { color: var(--color-ok); font-weight: 700; } .ap-warn { color: var(--color-warn); font-weight: 700; } .ap-bad { color: var(--color-bad); font-weight: 700; } .ap-mu { color: var(--color-fg-muted); }
+.ap-chart { position: relative; min-height: 220px; }
+.ap-chart svg { display: block; width: 100%; height: auto; }
+.ap-chart text { font-size: 12px; fill: var(--cds-text-secondary, var(--color-fg-muted)); }
+.ap-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover, var(--color-panel)); border: 1px solid var(--cds-border, var(--color-border-line)); box-shadow: var(--cds-shadow-popover, none); padding: 6px 10px; font-size: 12px; z-index: 2; max-width: 260px; }
+.ap-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: var(--cds-gap-lg); }
+.ap details { margin-top: 10px; font-size: 13px; } .ap summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; }
+.ap details p { max-width: 90ch; line-height: 1.5; }
+.ap-legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; margin: 6px 0; }
+.ap-empty { padding: 12px; border: 1px dashed var(--color-fg-muted); color: var(--color-fg-muted); font-size: 13px; }
+@media print { .ap-filter, .ap-clear { display: none; } }
+</style>
+
+<main class="ap" id="ap-top">
+  <header>
+    <div class="ap-lab">Frakture Agency Portfolio · Partners and account leadership · Snapshot as of <span data-draw="asof">—</span></div>
+    <h1 id="title">Agency Portfolio</h1>
+    <p class="ap-lede">The <b data-draw="t_nloaded" data-source="totals" data-field="nloaded">—</b> client accounts in this snapshot raised <b data-draw="t_ytd" data-source="totals" data-field="ytd">—</b> so far this year. Among the <b data-draw="t_ncomp" data-source="totals" data-field="ncomp">—</b> with a full prior year, revenue is <b data-draw="t_lfl" data-source="totals" data-field="lfl">—</b> on the same dates last year. <b data-draw="t_nrisk" data-source="totals" data-field="nrisk">—</b> are at risk of finishing more than 15% behind last year, and <b data-draw="t_nwatch" data-source="totals" data-field="nwatch">—</b> need watching. <b data-draw="t_ngrow" data-source="totals" data-field="ngrow">—</b> of the <b data-draw="t_ncomp2" data-source="totals" data-field="ncomp">—</b> comparable accounts are growing.</p>
+    <p class="ap-note">Every figure is the sum, or a weighted average, of the same metric in each client's Fundraising Report, for the same dates. Accounts sit at different points in the election cycle, so compare each one with its own last year before comparing accounts with each other. <span data-draw="t_pendingnote">—</span></p>
+  </header>
+
+  <section class="ap-tiles" aria-label="Portfolio headline figures">
+    <div class="ap-tile"><div class="k">Raised, all loaded accounts</div><div class="v" data-draw="k_ytd" data-source="totals" data-field="ytd">—</div><div class="s">Year to date</div></div>
+    <div class="ap-tile"><div class="k">Like for like vs last year</div><div class="v" data-draw="k_lfl" data-source="totals" data-field="lfl">—</div><div class="s" data-draw="k_lfl_s">—</div></div>
+    <div class="ap-tile"><div class="k">Projected year-end</div><div class="v" data-draw="k_proj">—</div><div class="s">Comparable accounts, from last year's and the 2022 pace</div></div>
+    <div class="ap-tile"><div class="k">Accounts growing</div><div class="v" data-draw="k_grow">—</div><div class="s" data-draw="k_grow_s">—</div></div>
+    <div class="ap-tile"><div class="k">New donors</div><div class="v" data-draw="k_new" data-source="totals" data-field="nd">—</div><div class="s" data-draw="k_new_s">—</div></div>
+    <div class="ap-tile"><div class="k">Monthly recurring run rate</div><div class="v" data-draw="k_rr" data-source="totals" data-field="rr">—</div><div class="s">Latest payment of each active monthly donor</div></div>
+    <div class="ap-tile"><div class="k">Raised per $1 of tracked cost</div><div class="v" data-draw="k_rpd" data-source="totals" data-field="rpd">—</div><div class="s">Texts and paid ads only</div></div>
+    <div class="ap-tile"><div class="k">Revenue traced to a channel</div><div class="v" data-draw="k_tr" data-source="totals" data-field="tr">—</div><div class="s">Weighted by revenue</div></div>
+    <div class="ap-tile"><div class="k">Top 3 accounts' share</div><div class="v" data-draw="k_top3" data-source="totals" data-field="top3">—</div><div class="s" data-draw="k_top3_s">—</div></div>
+  </section>
+
+  <section class="ap-card" id="where">
+    <h2>Where each account stands</h2>
+    <p class="sub">Across: money raised so far this year (log scale). Up and down: projected year-end against that account's own last year. Status uses a shape and a word: ● on track, ■ watch, ▲ at risk. Accounts with no full prior year can't be placed and are listed in the table.</p>
+    <div class="ap-legend"><span><b class="ap-good">●</b> On track</span><span><b class="ap-warn">■</b> Watch (5 to 15% behind)</span><span><b class="ap-bad">▲</b> At risk (more than 15% behind)</span></div>
+    <div class="ap-chart" data-draw="scatter" data-source="port"></div>
+    <p class="ap-note">Point at, or tab to, an account for its figures.</p>
+  </section>
+
+  <section class="ap-card" id="accounts">
+    <h2>Accounts</h2>
+    <p class="sub">One row per client account. Status: on track; watch (projected 5 to 15% behind last year); at risk (more than 15% behind); new this cycle (no full prior year). Select a column heading to sort; select it again to reverse.</p>
+    <div class="ap-filter"><span id="st-lab">Status</span>
+      <div class="ap-seg" role="group" aria-labelledby="st-lab">
+        <button type="button" data-f="all" aria-pressed="true">All (<span data-draw="c_all">—</span>)</button><button type="button" data-f="risk" aria-pressed="false">At risk (<span data-draw="c_risk">—</span>)</button><button type="button" data-f="watch" aria-pressed="false">Watch (<span data-draw="c_watch">—</span>)</button><button type="button" data-f="ok" aria-pressed="false">On track (<span data-draw="c_ok">—</span>)</button><button type="button" data-f="new" aria-pressed="false">New this cycle (<span data-draw="c_new">—</span>)</button>
+      </div></div>
+    <div class="ap-filter"><span id="cat-lab">Account type</span>
+      <div class="ap-seg" role="group" aria-labelledby="cat-lab" data-draw="cats"></div>
+      <button type="button" class="ap-clear" id="ap-clear">Clear filters</button>
+      <span aria-live="polite" data-draw="shown">—</span></div>
+    <p class="ap-sr" role="status" data-draw="sortmsg"></p>
+    <div class="ap-scroll" role="region" aria-label="Accounts in the portfolio (scrolls sideways)" tabindex="0">
+      <table style="min-width:1300px" data-source="port" data-row-key="id">
+        <caption class="ap-sr">Accounts in the portfolio. Column headings with arrows sort the table. The Status and Account type buttons filter it, and a Selected accounts row totals what is shown.</caption>
+        <thead><tr>
+          <th scope="col" class="l" data-field="name">Client</th><th scope="col" class="l" data-field="type">Account type</th>
+          <th scope="col" aria-sort="descending" data-field="ytd"><button type="button" class="ap-sb" data-sort="ytd">Raised</button></th>
+          <th scope="col" aria-sort="none" data-field="vs"><button type="button" class="ap-sb" data-sort="vs">vs last year</button></th>
+          <th scope="col">Share</th><th scope="col">Projected year-end</th>
+          <th scope="col" aria-sort="none" data-field="pvs"><button type="button" class="ap-sb" data-sort="pvs">Projected vs last year</button></th>
+          <th scope="col" aria-sort="none" data-field="nd"><button type="button" class="ap-sb" data-sort="nd">New donors</button></th>
+          <th scope="col" aria-sort="none" data-field="rr"><button type="button" class="ap-sb" data-sort="rr">Monthly run rate</button></th>
+          <th scope="col" aria-sort="none" data-field="rpd"><button type="button" class="ap-sb" data-sort="rpd">Raised per $1</button></th>
+          <th scope="col" aria-sort="none" data-field="tr"><button type="button" class="ap-sb" data-sort="tr">Traced to a channel</button></th>
+          <th scope="col" class="l" data-field="status">Status</th></tr></thead>
+        <tbody data-draw="rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ap-card" id="attention">
+    <h2>Needs attention</h2>
+    <p class="sub">Accounts at risk or on watch, then accounts with no full prior year. Owners and next steps are not recorded yet.</p>
+    <div class="ap-scroll" role="region" aria-label="Accounts that need attention (scrolls sideways)" tabindex="0"><table style="min-width:640px" data-source="port" data-row-key="id"><caption class="ap-sr">Accounts that need attention</caption>
+      <thead><tr><th scope="col" class="l" data-field="name">Client</th><th scope="col" class="l" data-field="status">Status</th><th scope="col" class="l">What changed</th></tr></thead><tbody data-draw="attn"></tbody></table></div>
+  </section>
+
+  <div class="ap-two">
+    <section class="ap-card" id="monthly"><h2>Portfolio revenue by month</h2>
+      <p class="sub">Accounts with a full prior year, added together. The dark tick is the same month last year, counted only up to today's date a year ago.</p>
+      <div class="ap-chart" data-draw="months" data-source="months"></div>
+      <p class="ap-note">Point at, or tab to, a bar for details.</p></section>
+    <section class="ap-card" id="channels"><h2>Channel mix across the portfolio</h2>
+      <p class="sub">Revenue by channel for the same accounts, by the Fundraising Report's channel rules.</p>
+      <div class="ap-scroll" role="region" aria-label="Channel mix (scrolls sideways)" tabindex="0"><table style="min-width:620px" data-source="channels" data-row-key="channel"><caption class="ap-sr">Channel mix across the portfolio</caption>
+        <thead><tr><th scope="col" class="l" data-field="channel">Channel</th><th scope="col" data-field="ty">Raised</th><th scope="col" data-field="share">Share</th><th scope="col" data-field="chg">vs last year</th><th scope="col" data-field="up">Accounts up</th><th scope="col" class="l" data-field="best">Biggest account</th></tr></thead><tbody data-draw="chans"></tbody></table></div></section>
+  </div>
+
+  <section class="ap-card" id="coverage"><h2>Reporting coverage</h2>
+    <p class="sub">How complete the data behind these numbers is. A gap here means a figure is missing or less certain, not that an account is doing badly. An account is never counted as zero.</p>
+    <div class="ap-scroll" role="region" aria-label="Reporting coverage (scrolls sideways)" tabindex="0"><table style="min-width:760px" data-source="coverage" data-row-key="check"><caption class="ap-sr">Reporting coverage across accounts</caption>
+      <thead><tr><th scope="col" class="l" data-field="check">Check</th><th scope="col" data-field="accounts">Accounts</th><th scope="col" class="l" data-field="gaps">Gaps at</th><th scope="col" class="l" data-field="affects">What it affects</th></tr></thead><tbody data-draw="cov"></tbody></table></div>
+  </section>
+
+  <section class="ap-card" id="reading"><h2>Reading the portfolio</h2>
+    <p><b>Each account is compared with its own last year first.</b> Campaigns peak in election years and committees between them, so raw growth rates across accounts aren't like for like.</p>
+    <p><b>Like for like leaves out accounts with no prior year.</b> They count in totals but not in growth rates, projections against last year or new-donor change.</p>
+    <p><b>Raised per $1 covers texts and ads only,</b> the costs Engine 9 tracks at every account. Rented lists, agency fees and staff time aren't in it.</p>
+    <p><b>Projections are pacing estimates,</b> each account's Scorecard projection added up, not a forecast.</p>
+  </section>
+
+  <details id="defs"><summary>Definitions and how to read this page</summary>
+    <p><b>Audience.</b> Partners, owners and account leadership. This page shows every client side by side, so it must never be shared with a client. Message-level detail stays in each client's Fundraising Report.</p>
+    <p><b>Where each figure comes from.</b> Raised and vs last year: All Donations. Projected year-end: the Scorecard projection, from last year's and 2022's pace, shown as a range. New donors: donors whose first gift in any record falls this year, against the same dates last year. Monthly run rate: the latest payment of each donor with a recurring gift in the last 35 days. Raised per $1: revenue from texts and paid ads over their tracked cost. Traced to a channel: revenue with a source code or message that maps to a channel.</p>
+    <p><b>Like for like.</b> The headline total includes every loaded account. Growth, projection against last year, new-donor change, the monthly chart and the channel table leave out accounts with no full prior year, which show "New this cycle". A comparison year counts only if the account's gifts start by January 7 of that year.</p>
+    <p><b>Account type.</b> Read from each client's account in Engine 9. An account with no type is left out of the portfolio and named in Reporting coverage.</p>
+    <p><b>Status.</b> At risk: projected more than 15% behind last year. Watch: 5 to 15% behind. New this cycle: no full prior year. High-severity data-quality issues are not yet part of status.</p>
+  </details>
+</main>
+<script src="app.js"></script>

@@ -1,0 +1,56 @@
+{
+  "system": {
+    "name": "Frakture"
+  },
+  "light": {
+    "ground": "#f7faf9",
+    "card": "#ffffff",
+    "text": "#212529",
+    "muted": "#3f4945",
+    "border": "#d9dedc",
+    "good": "#2e7d4a",
+    "warning": "#9a5b00",
+    "bad": "#b3261e",
+    "charts": [
+      "#007a99",
+      "#f89800",
+      "#9b2fc9",
+      "#3e8e58",
+      "#5a6763",
+      "#c2185b",
+      "#01a3cc",
+      "#b5a06a"
+    ]
+  },
+  "dark": {
+    "ground": "#0f1517",
+    "card": "#182124",
+    "text": "#f1f4f3",
+    "muted": "#a3b0ac",
+    "border": "#2b373a",
+    "good": "#4cc27a",
+    "warning": "#e5a33b",
+    "bad": "#f08a80",
+    "charts": [
+      "#01ccff",
+      "#f89800",
+      "#c77deb",
+      "#6ac481",
+      "#a9b4b0",
+      "#f06292",
+      "#7fe3ff",
+      "#d9c79a"
+    ]
+  },
+  "corners": "0px",
+  "sizes": {
+    "caption": "12px",
+    "body": "14px",
+    "heading": "18px",
+    "title": "34px"
+  },
+  "fonts": {
+    "text": "'Nunito Sans', 'Segoe UI', system-ui, sans-serif",
+    "display": "Outfit, 'Segoe UI', system-ui, sans-serif"
+  }
+}

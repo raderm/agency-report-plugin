@@ -4,8 +4,7 @@ A one-page dashboard for partners, owners and account leadership. It shows how e
 account performs as part of the agency portfolio. Every figure is derived from the same metric in that
 client's [Fundraising Report](https://github.com/raderm/fundraising-report-plugin), so the two always agree.
 
-**Status: draft.** This repo holds the design mockup (sample data, placeholder client names). The live report,
-built from Liftoff data, is not built yet. See `docs/build-plan.md`.
+**Status: draft.** This repo holds the design mockup (sample data, placeholder client names). The live report is not built yet. See `docs/build-plan.md`.
 
 ## What's here
 

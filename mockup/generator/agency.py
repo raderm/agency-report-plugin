@@ -3,21 +3,21 @@ from common import *
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'output') + os.sep
 os.makedirs(OUT, exist_ok=True)
 
-# name, sector, director, ytd, ly_to_date (None = no comparable year), proj factor lo/hi, ly_full factor,
+# name, director, ytd, ly_to_date (None = no comparable year), proj factor lo/hi, ly_full factor,
 # new donors, new ly, run rate/mo, costed revenue, tracked cost, traced share, high DQ issues, flags
 C = [
-    ('Client A', 'National political committee', 'M. Ortiz', 6586163, 7120000, 1.167, 1.202, 1.167, 31460, 36900, 127900, 1730000, 606300, .859, 3),
-    ('Client B', 'National advocacy org', 'K. Tran', 5840000, 5210000, 1.172, 1.198, 1.171, 24310, 21980, 118400, 1410000, 318000, .912, 0),
-    ('Client C', 'U.S. Senate campaign', 'J. Lewis', 4920000, 2100000, 1.31, 1.42, 1.40, 38120, 17400, 46200, 2160000, 1240000, .884, 1),
-    ('Client D', 'Environmental nonprofit', 'S. Patel', 3710000, 3880000, 1.214, 1.238, 1.228, 12840, 14210, 96300, 640000, 152000, .937, 0),
-    ('Client E', 'Civil rights org', 'K. Tran', 3260000, 2940000, 1.205, 1.226, 1.219, 11920, 10450, 71800, 520000, 131000, .901, 0),
-    ('Client F', 'House caucus PAC', 'M. Ortiz', 2850000, 3470000, 1.158, 1.181, 1.172, 9840, 13120, 38600, 910000, 486000, .802, 2),
-    ('Client G', 'Health research charity', 'S. Patel', 2410000, 2360000, 1.236, 1.262, 1.251, 7210, 7480, 64100, 310000, 74000, .948, 0),
-    ('Client H', 'State party', 'J. Lewis', 2180000, 2660000, 1.149, 1.171, 1.164, 8930, 11870, 29700, 640000, 312000, .768, 2),
-    ('Client I', 'Voting rights group', 'K. Tran', 1970000, 1520000, 1.188, 1.214, 1.196, 10410, 7320, 41200, 480000, 166000, .893, 0),
-    ('Client J', 'Animal welfare nonprofit', 'S. Patel', 1630000, 1710000, 1.226, 1.249, 1.237, 5120, 5640, 52800, 190000, 61000, .926, 1),
-    ('Client K', 'Gubernatorial campaign', 'J. Lewis', 1420000, None, 1.35, 1.48, None, 14260, None, 12400, 880000, 512000, .861, 1),
-    ('Client L', 'Local news nonprofit', 'M. Ortiz', 880000, 790000, 1.231, 1.257, 1.244, 3310, 2980, 33600, 90000, 24000, .957, 0),
+    ('Client A', 'M. Ortiz', 6586163, 7120000, 1.167, 1.202, 1.167, 31460, 36900, 127900, 1730000, 606300, .859, 3),
+    ('Client B', 'K. Tran', 5840000, 5210000, 1.172, 1.198, 1.171, 24310, 21980, 118400, 1410000, 318000, .912, 0),
+    ('Client C', 'J. Lewis', 4920000, 2100000, 1.31, 1.42, 1.40, 38120, 17400, 46200, 2160000, 1240000, .884, 1),
+    ('Client D', 'S. Patel', 3710000, 3880000, 1.214, 1.238, 1.228, 12840, 14210, 96300, 640000, 152000, .937, 0),
+    ('Client E', 'K. Tran', 3260000, 2940000, 1.205, 1.226, 1.219, 11920, 10450, 71800, 520000, 131000, .901, 0),
+    ('Client F', 'M. Ortiz', 2850000, 3470000, 1.158, 1.181, 1.172, 9840, 13120, 38600, 910000, 486000, .802, 2),
+    ('Client G', 'S. Patel', 2410000, 2360000, 1.236, 1.262, 1.251, 7210, 7480, 64100, 310000, 74000, .948, 0),
+    ('Client H', 'J. Lewis', 2180000, 2660000, 1.149, 1.171, 1.164, 8930, 11870, 29700, 640000, 312000, .768, 2),
+    ('Client I', 'K. Tran', 1970000, 1520000, 1.188, 1.214, 1.196, 10410, 7320, 41200, 480000, 166000, .893, 0),
+    ('Client J', 'S. Patel', 1630000, 1710000, 1.226, 1.249, 1.237, 5120, 5640, 52800, 190000, 61000, .926, 1),
+    ('Client K', 'J. Lewis', 1420000, None, 1.35, 1.48, None, 14260, None, 12400, 880000, 512000, .861, 1),
+    ('Client L', 'M. Ortiz', 880000, 790000, 1.231, 1.257, 1.244, 3310, 2980, 33600, 90000, 24000, .957, 0),
 ]
 # Category is the Engine 9 account type (candidate, pac, nonprofit, state_party). Placeholder assignments here.
 CAT = {'Client A': 'Nonprofit', 'Client B': 'Nonprofit', 'Client C': 'Candidate', 'Client D': 'Nonprofit', 'Client E': 'Nonprofit',
@@ -25,7 +25,7 @@ CAT = {'Client A': 'Nonprofit', 'Client B': 'Nonprofit', 'Client C': 'Candidate'
        'Client K': 'Candidate', 'Client L': 'Nonprofit'}
 CATS = ['Candidate', 'PAC', 'State party', 'Nonprofit']
 rows = []
-for nm, sec, ad, ytd, ly, plo, phi, lyf, nd, ndly, rr, crev, cost, tr, hi in C:
+for nm, ad, ytd, ly, plo, phi, lyf, nd, ndly, rr, crev, cost, tr, hi in C:
     lo, hi_ = ytd * plo, ytd * phi
     lyfull = ly * lyf if ly else None
     vs = (ytd - ly) / ly if ly else None
@@ -34,7 +34,7 @@ for nm, sec, ad, ytd, ly, plo, phi, lyf, nd, ndly, rr, crev, cost, tr, hi in C:
     elif pvs < -.15: status = 'At risk'
     elif pvs < -.05 or hi >= 1: status = 'Watch'
     else: status = 'On track'
-    rows.append(dict(nm=nm, cat=CAT[nm], sec=sec, ad=ad, ytd=ytd, ly=ly, lo=lo, hi=hi_, lyfull=lyfull, vs=vs, pvs=pvs, nd=nd, ndly=ndly, rr=rr,
+    rows.append(dict(nm=nm, cat=CAT[nm], ad=ad, ytd=ytd, ly=ly, lo=lo, hi=hi_, lyfull=lyfull, vs=vs, pvs=pvs, nd=nd, ndly=ndly, rr=rr,
                      rpd=crev / cost, tr=tr, dq=hi, status=status))
 TOT = sum(r['ytd'] for r in rows); TLY = sum(r['ly'] for r in rows if r['ly'])
 COMP = [r for r in rows if r['ly']]
@@ -56,7 +56,7 @@ jsrows = []
 for r in rows:
     jsrows.append({'st': r['status'], 'cat': r['cat'], 'k_ly': r['ly'], 'k_rr': r['rr'], 'k_ytd': r['ytd'], 'k_vs': r['vs'], 'k_pvs': r['pvs'],
                    'k_nd': r['nd'], 'k_rpd': r['rpd'], 'k_tr': r['tr'],
-                   'c0': r['nm'], 'c1': r['cat'] + ' · ' + r['sec'], 'c2': r['ad'], 'c3': mk(r['ytd']), 'c4': pc(r['vs']) if r['vs'] is not None else 'No prior year', 'c5': pct(r['ytd'] / TOT),
+                   'c0': r['nm'], 'c1': r['cat'], 'c2': r['ad'], 'c3': mk(r['ytd']), 'c4': pc(r['vs']) if r['vs'] is not None else 'No prior year', 'c5': pct(r['ytd'] / TOT),
                    'c6': f"{mk(r['lo'])}–{mk(r['hi'])}", 'c7': pc(r['pvs']) if r['pvs'] is not None else '—', 'c8': n(r['nd']), 'c9': mk(r['rr']), 'c10': m2(r['rpd']),
                    'c11': pct(r['tr'], 0), 'c12': SHAPE[r['status']] + ' ' + r['status'],
                    'vc': ('#2E7D4A' if (r['vs'] or 0) >= 0 else '#B3261E') if r['vs'] is not None else MUT,
@@ -122,19 +122,21 @@ k = [r for r in rows if r['status'] == 'New this cycle'][0]
 w, nx, due = reasons['Client K']
 attrows.append([f'<b>{k["nm"]}</b>', f'<b style="color:{MUT}">{SHAPE[k["status"]]} {k["status"]}</b>', w, nx, k['ad'], due])
 
-cov = [['Cost tracked for texts and ads', '12 of 12', '—', 'Return per $1 covers texts and ads only, at every account'],
+cov = [['Account included in this snapshot', '12 of 12', '—', 'Accounts not yet loaded are named here and are in no total'],
+       ['Cost tracked for texts and ads', '12 of 12', '—', 'Return per $1 covers texts and ads only, at every account'],
        ['Account type set in Engine 9', '12 of 12', '—', 'Accounts with no type are left out of the portfolio and named here'],
        ['Cost tracked for rented lists', '3 of 5 that rent', 'Clients A, J', 'Rented-list payback missing at 2 accounts'],
        ['Email list table connected', '11 of 12', 'Client L', 'List growth blank for 1 account'],
        ['A full prior year on record', '11 of 12', 'Client K', 'Left out of year-on-year totals'],
        ['Revenue traced to a channel, 85% or more', '10 of 12', 'Clients F, H', 'Channel mix less certain at 2 accounts'],
-       [f'High-severity data-quality issues', f'{sum(r["dq"] for r in rows)} issues at {sum(1 for r in rows if r["dq"])} accounts', 'Clients A, C, F, H, J, K', 'From each account\'s weekly Data Quality snapshot']]
+       ['High-severity data-quality issues (planned)', f'{sum(r["dq"] for r in rows)} issues at {sum(1 for r in rows if r["dq"])} accounts', 'Clients A, C, F, H, J, K', 'From each account\'s weekly Data Quality snapshot']]
 
-PP = '{{perPhrase}}'
+PP = 'so far this year'
+planned_note = '<p class="note" style="margin-top:10px"><b>Planned, not in the live build yet:</b> the Account director column, the Next step, Owner and Review by columns in Needs attention, and data-quality issues counting toward Watch. They need data that no report holds today. Values shown are sample entries.</p>'
 FILTERS = [('all', 'All', len(rows)), ('risk', 'At risk', cnt['At risk']), ('watch', 'Watch', cnt['Watch']), ('ok', 'On track', cnt['On track']), ('new', 'New this cycle', cnt['New this cycle'])]
 FMAP = {'risk': 'At risk', 'watch': 'Watch', 'ok': 'On track', 'new': 'New this cycle'}
 
-head = [('Client', None), ('Category · sector', None), ('Account director', None), ('Raised', 'ytd'), ('vs last year', 'vs'), ('Share of portfolio', None),
+head = [('Client', None), ('Account type', None), ('Account director (planned)', None), ('Raised', 'ytd'), ('vs last year', 'vs'), ('Share of portfolio', None),
         ('Projected year-end', None), ('Projected vs last year', 'pvs'), ('New donors', 'nd'), ('Monthly run rate', None), ('Raised per $1 tracked cost', 'rpd'),
         ('Traced to a channel', 'tr'), ('Status', None)]
 hh = ''
@@ -157,14 +159,14 @@ filt = ('<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;mar
         '<sc-for list="{{filters}}" as="f" hint-placeholder-count="5"><button type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" '
         'style="font-family:Outfit,sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border:0;border-left:{{f.bl}};padding:0 14px;min-height:44px;cursor:pointer;background:{{f.bg}};color:{{f.fg}}">{{f.label}}</button></sc-for></div>'
         '</div>'
-        '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:#3F4945"><span id="cat-lab">Category</span>'
+        '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:10px;font-size:13px;color:#3F4945"><span id="cat-lab">Account type</span>'
         '<div role="group" aria-labelledby="cat-lab" style="display:inline-flex;flex-wrap:wrap;border:1px solid #212529">'
         '<sc-for list="{{catFilters}}" as="f" hint-placeholder-count="5"><button type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}" '
         'style="font-family:Outfit,sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;border:0;border-left:{{f.bl}};padding:0 14px;min-height:44px;cursor:pointer;background:{{f.bg}};color:{{f.fg}}">{{f.label}}</button></sc-for></div>'
         '<span>{{shownTxt}}</span><button type="button" onClick="{{clearAll}}" style="font-family:Outfit,sans-serif;font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;min-height:44px;padding:0 14px;border:1px solid #212529;background:#fff;color:#212529;cursor:pointer">Clear filters</button></div>')
 acct_table = (filt + '<p aria-live="polite" class="sr">{{tblMsg}}</p>'
               '<div role="region" aria-label="Accounts in the portfolio (scrolls sideways)" tabindex="0" class="scr"><table class="t" style="min-width:1500px">'
-              '<caption class="sr">Accounts in the portfolio. Column headings with arrows sort the table; the Status and Category buttons filter it, and a Selected accounts row totals whatever is shown.</caption>'
+              '<caption class="sr">Accounts in the portfolio. Column headings with arrows sort the table; the Status and Account type buttons filter it, and a Selected accounts row totals whatever is shown.</caption>'
               f'<thead><tr>{hh}</tr></thead><tbody><sc-for list="{{{{acctRows}}}}" as="r" hint-placeholder-count="12"><tr>{tds}</tr></sc-for>'
               '<tr class="tot" style="display:{{subDisp}}"><td>Selected accounts</td><td class="l">{{subLabel}}</td><td class="l">—</td><td>{{sub_ytd}}</td><td>{{sub_vs}}</td><td>{{sub_share}}</td><td>—</td><td>—</td><td>{{sub_nd}}</td><td>{{sub_rr}}</td><td>—</td><td>—</td><td style="text-align:left">{{sub_stat}}</td></tr>'
               f'<tr class="tot"><td>Portfolio</td><td class="l">12 accounts</td><td class="l">4 directors</td><td>{mk(TOT)}</td><td>{pc((TOT - TLY) / TLY)}</td><td>100%</td>'
@@ -189,13 +191,13 @@ js = f'''
     const comp = rows.filter((r) => r.k_ly);
     const allYtd = sum(ROWS, (r) => r.k_ytd);
     out.subDisp = filtered && rows.length ? 'table-row' : 'none';
-    out.subLabel = (cat === 'all' ? 'All categories' : cat) + (flt === 'all' ? '' : ', ' + FMAP[flt].toLowerCase());
+    out.subLabel = (cat === 'all' ? 'All types' : cat) + (flt === 'all' ? '' : ', ' + FMAP[flt].toLowerCase());
     Object.assign(out, Object.fromEntries(Object.entries({{ ytd: mk(sum(rows, (r) => r.k_ytd)), vs: comp.length ? pc((sum(comp, (r) => r.k_ytd) - sum(comp, (r) => r.k_ly)) / sum(comp, (r) => r.k_ly)) + (comp.length < rows.length ? ' (comparable only)' : '') : 'No prior year',
                 share: (sum(rows, (r) => r.k_ytd) / allYtd * 100).toFixed(1) + '%', nd: sum(rows, (r) => r.k_nd).toLocaleString('en-US'), rr: mk(sum(rows, (r) => r.k_rr)), stat: rows.length + ' accounts' }}).map(([k, v]) => ['sub_' + k, v])));
     out.catFilters = [['all', 'All', ROWS.length]].concat(CATS.map((c) => [c, c, ROWS.filter((r) => r.cat === c).length])).map((f, i) => ({{
       label: f[1] + ' (' + f[2] + ')', pressed: f[0] === cat ? 'true' : 'false',
       bg: f[0] === cat ? '{INK}' : '#ffffff', fg: f[0] === cat ? '#ffffff' : '{INK}', bl: i ? '1px solid {INK}' : '0',
-      pick: () => this.setState({{ cat: f[0], tblMsg: 'Category: ' + f[1] + '. ' + f[2] + ' accounts in this category.' }})
+      pick: () => this.setState({{ cat: f[0], tblMsg: 'Account type: ' + f[1] + '. ' + f[2] + ' accounts of this type.' }})
     }}));
     out.clearAll = () => this.setState({{ flt: 'all', cat: 'all', tblMsg: 'Filters cleared. Showing all ' + ROWS.length + ' accounts.' }});
     out.filters = FILTERS.map((f, i) => ({{
@@ -214,7 +216,7 @@ js = f'''
     return out;
   }}'''
 
-body = (f'<header><div class="lab">[AGENCY NAME] · Portfolio · {{{{perLabel}}}} · Partners and account leadership · Sample data</div>'
+body = (f'<header><div class="lab">[AGENCY NAME] · Portfolio · Snapshot as of Nov 25, 2026 · Partners and account leadership · Sample data</div>'
         f'<h1 style="font-family:Outfit,sans-serif;font-weight:500;font-size:36px;line-height:1.15;margin:8px 0 0">Agency Portfolio</h1>'
         f'<p style="font-size:16px;line-height:1.55;margin:10px 0 0;max-width:82ch">Client accounts raised <b>{mk(TOT)}</b> {PP}, <b>{pc((TOT - TLY) / TLY)}</b> on the same dates last year '
         f'(<b>{pc((LFL_TY - LFL_LY) / LFL_LY)}</b> like for like, leaving out the one account with no prior year). <b>{GROW} of 11</b> comparable accounts are growing. '
@@ -229,14 +231,14 @@ body += tiles([('Raised, all accounts', mk(TOT), f'Same dates last year {mk(TLY)
                ('Revenue traced to a channel', pct(TRACED, 1), 'Weighted by revenue · 2 accounts under 85%'),
                ('Top 3 accounts’ share', pct(top3, 0), 'Clients A, B and C · concentration risk')], 230)
 body += card('Where each account stands', 'Across: money raised so far this year. Up and down: projected year-end against that account’s own last year. Status uses both the shape and the word: ● on track, ■ watch, ▲ at risk. Accounts on or below the dashed lines are flagged.',
-             legend(key(f'width:12px;height:12px;border-radius:50%;background:{STC["On track"]}', 'On track'), key(sw(STC['Watch']), 'Watch (5–15% behind, or a high data issue)'),
+             legend(key(f'width:12px;height:12px;border-radius:50%;background:{STC["On track"]}', 'On track'), key(sw(STC['Watch']), 'Watch (5–15% behind; high data issue planned)'),
                     key(f'width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:12px solid {STC["At risk"]}', 'At risk (more than 15% behind)'))
-             + f'<div style="margin-top:8px">{scatter()}</div>' + '<p class="note" style="margin-top:6px">Point at, or tab to, an account for its figures. Arrow keys move between accounts in order of revenue; Escape closes the details. In the live dashboard, selecting an account opens its Fundraising Report.</p>'
+             + f'<div style="margin-top:8px">{scatter()}</div>' + '<p class="note" style="margin-top:6px">Point at, or tab to, an account for its figures. Arrow keys move between accounts in order of revenue; Escape closes the details.</p>'
              + alt(['Client', 'Raised', 'Projected vs last year', 'Status'], [[r['nm'], mk(r['ytd']), pc(r['pvs']), r['status']] for r in rows]))
 body += card('Accounts', 'One row per client account. Status: on track, watch (projected 5–15% behind last year, or a high-severity data-quality issue), at risk (projected more than 15% behind), or new this cycle (no prior year to compare). Select a column heading with an arrow to sort; select it again to reverse.', acct_table
-             + caption(f'Client C’s Senate race explains the portfolio’s growth: without it, comparable accounts are {pc(((LFL_TY - 4920000) - (LFL_LY - 2100000)) / (LFL_LY - 2100000))} on last year.'))
+             + planned_note)
 body += card('Needs attention', 'Accounts at risk or on watch, with what changed, the agreed next step and who owns it. Next steps and dates are entered by account directors; the rest comes from each account’s report.',
-             table('Accounts that need attention', ['Client', 'Status', 'What changed', 'Next step', 'Owner', 'Review by'], attrows, 1000, left=(1, 2, 3, 4)))
+             table('Accounts that need attention', ['Client', 'Status', 'What changed', 'Next step (planned)', 'Owner (planned)', 'Review by (planned)'], attrows, 1000, left=(1, 2, 3, 4)))
 body += ('<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(520px,1fr));gap:24px">'
          + card('Portfolio revenue by month', 'All accounts added together. The dark tick is the same month last year, counted only up to today’s date. This chart always covers the whole year to date.',
                 legend(key(sw(TEAL), 'This year'), key(f'width:18px;height:0;border-top:3px solid {INK}', 'Same month last year'))
@@ -255,8 +257,9 @@ body += gaps('Reading the portfolio', [
     ('Projections are pacing estimates,', 'each account’s Scorecard projection added up, not a forecast.')])
 body += defs(['<b>Audience.</b> This page is for partners, owners and account leadership. It shows account-level results only; message-level detail stays in each client’s Fundraising Report.',
               '<b>Where each figure comes from.</b> Raised and vs last year: All Donations. Projected year-end: the Scorecard projection. New donors: Acquisition. Monthly run rate: All Donations, recurring donors. Raised per $1: Scorecard, texts and ads. Traced to a channel and data-quality issues: Data Quality.',
-              '<b>Period.</b> The picker sets the period for every figure except the projection, which always covers the calendar year. Each compares with the same dates a year earlier.',
-              '<b>Status.</b> At risk: projected more than 15% behind last year. Watch: 5–15% behind, or one or more high-severity data-quality issues. New this cycle: no full prior year on record.'])
+              '<b>Like for like.</b> Growth, projection against last year, new-donor change, the monthly chart and the channel table leave out accounts with no full prior year. A comparison year counts only if the account’s gifts start by January 7 of that year.',
+              '<b>Account type.</b> Read from each client’s account in Engine 9. An account with no type is left out of the portfolio and named in Reporting coverage.',
+              '<b>Status.</b> At risk: projected more than 15% behind last year. Watch: 5–15% behind (planned: or one or more high-severity data-quality issues). New this cycle: no full prior year on record.'])
 
 # ---------- shell (no report tabs) ----------
 per = ('<sc-for list="{{periods}}" as="p" hint-placeholder-count="4"><button type="button" aria-pressed="{{p.pressed}}" onClick="{{p.pick}}" '
@@ -266,8 +269,10 @@ doc = shell('Main.dc.html', 'Agency Portfolio', None, body, js, h=4600)
 # replace the report tab bar and brand with the portfolio header
 import re
 doc = re.sub(r'<nav aria-label="Report pages".*?</nav>', '', doc, flags=re.S)
+doc = re.sub(r'<div[^>]*><span id="per-lab">.*?</sc-for></div></div>', '', doc, flags=re.S)
+doc = re.sub(r'<p aria-live="polite" class="sr">\{\{perAnnounce\}\}</p>', '', doc)
 doc = doc.replace('Fundraising Report</span></div>', 'Agency Portfolio</span></div>')
-doc = doc.replace('The period picker changes the highlighted period and labels only.', 'The period picker changes the highlighted period and labels only. Client names are placeholders.')
+doc = doc.replace('The period picker changes the highlighted period and labels only.', 'Client names are placeholders.')
 open(OUT + 'Main.dc.html', 'w').write(doc)
 print([round(a-b,2) for a,b in zip(ty_m,ly_m)]); print(len(doc), mk(TOT), mk(TLY), cnt, GROW, mk(PLO), mk(PHI), mk(LYFULL), pc(((PLO_C + PHI_C) / 2 - LYFULL) / LYFULL), m2(CREV / CCOST), pct(TRACED), pct(top3))
 for r in rows: print(r['nm'], mk(r['ytd']), pc(r['vs']), pc(r['pvs']), r['status'])

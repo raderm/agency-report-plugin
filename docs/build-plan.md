@@ -72,3 +72,16 @@ load is listed and left out of the totals, with a count beside the headline figu
 - Snapshot covers 5 of 28 typed accounts (ECU, Acton, Andrews, Ansari, Back the Bold); the other 23 show as `pending` in Reporting coverage and are in no total.
 - Page source (index.html and app.js) lives in the artifact's database; export it into `page/` when the report is final.
 - To add accounts: run `queries/portfolio.py` SQL per account, save to `data/raw/<id>.json`, rerun `queries/build_snapshot.py`, upload `data/snapshot.json` and update the dataset URL.
+
+## Mockup and live page alignment (2026-11-25)
+
+- Sector is dropped everywhere. A client has one Account type, read from Engine 9.
+- The mockup has no period picker; the live page is year to date.
+- Planned, not in the live build: Account director column; Next step, Owner and Review by in Needs attention;
+  high-severity data-quality issues counting toward Watch. The mockup labels them (planned).
+- Removed from the mockup as not computable: the editorial caption under the accounts table and the
+  click-through-to-report note.
+- Live page now matches the mockup on: Accounts growing tile, top-3 account names, Accounts up and Biggest
+  account columns, scatter legend, Reading the portfolio. Still different by design: the live channel table lists
+  the classifier's 11 channels; the mockup groups them into 7. Monthly bars have no value labels (they overlap);
+  values are in the tooltip and "View as table".
